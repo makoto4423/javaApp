@@ -15,10 +15,11 @@ public class NettyControllerHandler extends ChannelInboundHandlerAdapter {
 
     Logger logger = Logger.getLogger(NettyControllerHandler.class.getName());
 
+    // msg只能获取到请求，如果数据放body里面无法获取
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("receive msg" + msg);
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                HttpResponseStatus.OK, Unpooled.wrappedBuffer("I got it".getBytes()));
+                HttpResponseStatus.OK, Unpooled.wrappedBuffer("I got it".getBytes("UTF-8")));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/json; charset=UTF-8")
                             .set(HttpHeaderNames.CONTENT_LENGTH,response.content().readableBytes());
         // ctx.fireChannelRead(msg);
@@ -27,7 +28,7 @@ public class NettyControllerHandler extends ChannelInboundHandlerAdapter {
 
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         // ctx.flush();
-        ctx.channel().closeFuture();
+        logger.info("read over");
     }
 
 }
