@@ -18,6 +18,8 @@ public class Application {
         }
         Object[] arr = new Long[1];
         union(new HashSet<Integer>(),new HashSet<Double>());
+        Class<String> stringClass = (Class<String>) "dd".getClass();
+        stringClass.cast("ddd");
     }
 
     private static  <E> Set<E> union(Set<? extends E> s1, Set<? extends E> s2){

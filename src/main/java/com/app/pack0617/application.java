@@ -18,15 +18,18 @@ public class application {
 
 
     public static void main(String[] args) throws Exception {
-        mailFrom = "a1927424904@163.com";
-        password_mailFrom="qbc7758258";
-        mailTo = "b1927424904@163.com";
+        mailFrom = "";
+        password_mailFrom="";
+        mailTo = "";
         mailTittle="节日快乐2！";
         mailText = "这是一个简单的邮件";
-        mail_host="smtp.163.com";
+        mail_host="smtp.qq.com";
+        String port = "587";
 
         Properties prop = new Properties();
         prop.setProperty("mail.host", mail_host);
+        prop.setProperty("mail.port",port);
+        prop.setProperty("mail.smtp.ssl.enable","true");
         prop.setProperty("mail.transport.protocol", "smtp");
         prop.setProperty("mail.smtp.auth", "true");
 
@@ -39,11 +42,11 @@ public class application {
         // 2、通过session得到transport对象
         Transport ts = session.getTransport();
         // 3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
-        ts.connect(mail_host,mailFrom, password_mailFrom);
+        ts.connect(mail_host,Integer.parseInt(port),mailFrom, password_mailFrom);
         // 4、创建邮件
         Message message = createSimpleMail(session,mailFrom,mailTo,mailTittle,mailText);
         // 5、发送邮件
-        ts.sendMessage(message, message.getAllRecipients());
+        // ts.sendMessage(message, message.getAllRecipients());
         ts.close();
 
     }
