@@ -1,6 +1,7 @@
 package com.app.po;
 
 public class John implements Man, Engineer,AutoCloseable {
+
     public void program() {
         System.out.println(" program ...");
     }

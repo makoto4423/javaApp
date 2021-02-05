@@ -4,6 +4,7 @@ package com.app.pack1123;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
@@ -28,29 +29,33 @@ public class Application {
             Set<String> set = new HashSet<>();
             Workbook xwb = new XSSFWorkbook(is);
             // 循环工作表sheet
-            StringBuilder head = new StringBuilder("INSERT INTO `mnt_index_defined` (`ID`, `NAME`, `TYPE`, `LEVEL_1`, `LEVEL_1_NAME`, `LEVEL_2`, `LEVEL_2_NAME`, `LEVEL_3`, `LEVEL_3_NAME`, `LEVEL_4`, `LEVEL_4_NAME`, `LABELS`, `LABELS_NAME`) ");
+            StringBuilder head = new StringBuilder("INSERT INTO `mnt_index_defined` (`ID`, `NAME`, `TYPE`, `LEVEL_1`, `LEVEL_1_NAME`, `LEVEL_2`, `LEVEL_2_NAME`, `LEVEL_3`, `LEVEL_3_NAME`, `LEVEL_4`, `LEVEL_4_NAME`, `LABELS`, `LABELS_NAME`, `UNIT_VALUE`) ");
             for (int numSheet = 0; numSheet < xwb.getNumberOfSheets(); numSheet++) {
                 Sheet sheet = xwb.getSheetAt(numSheet);
                 if (sheet == null) {
                     continue;
                 }
-                Map<String,String> map = new HashMap<>();
-                map.put("instance","节点");
+                Union union = new Union();
+                List<CellRangeAddress> range = sheet.getMergedRegions();
+                range.removeIf(o -> o.getFirstColumn() != 5);
+                range.forEach(o->union.union(o.getFirstRow(),o.getLastRow()));
+                Map<String, String> map = new HashMap<>();
+                map.put("instance", "节点");
                 for (int numRow = 1; numRow <= sheet.getLastRowNum(); numRow++) {
                     Row row = sheet.getRow(numRow);
                     String key = getValue(row.getCell(6));
-                    if(key.length() == 0) break;
+                    if (key == null || key.length() == 0) break;
                     String value = getValue(row.getCell(7));
-                    map.put(key,value);
+                    map.put(key, value);
                 }
-                StringBuilder h1 = new StringBuilder("INSERT INTO `mnt_index_label` (`id`, `name`, `zh_name`) ");
-                for(String k : map.keySet()){
-                    StringBuilder dd = new StringBuilder(h1);
-                    dd.append(" VALUES ('proIndex-").append(UUID.randomUUID().toString().replaceAll("-", "").substring(20)).append("',");
-                    dd.append("'").append(k).append("',");
-                    dd.append("'").append(map.get(k)).append("');");
-                    System.out.println(dd);
-                }
+//                StringBuilder h1 = new StringBuilder("INSERT INTO `mnt_index_label` (`id`, `name`, `zh_name`) ");
+//                for(String k : map.keySet()){
+//                    StringBuilder dd = new StringBuilder(h1);
+//                    dd.append(" VALUES ('proIndex-").append(UUID.randomUUID().toString().replaceAll("-", "").substring(20)).append("',");
+//                    dd.append("'").append(k).append("',");
+//                    dd.append("'").append(map.get(k)).append("');");
+//                    System.out.println(dd);
+//                }
                 String index1 = "", index2 = "", index3 = "", index4 = "", label = "";
                 // 循环row，如果第一行是字段，则 numRow = 1
                 for (int numRow = 1; numRow <= sheet.getLastRowNum(); numRow++) {
@@ -61,7 +66,7 @@ public class Application {
                     StringBuilder sb = new StringBuilder(head);
                     sb.append("  VALUES (");
                     String value = getValue(row.getCell(0));
-                    if (value == null) break;
+                    if (value == null) continue;
                     sb.append("'proIndex-").append(UUID.randomUUID().toString().replaceAll("-", "").substring(20)).append("',");
                     value = getValue(row.getCell(4));
                     if (value == null || value.length() == 0) continue;
@@ -94,18 +99,22 @@ public class Application {
                     sb.append(spell(index4));
                     value = getValue(row.getCell(5));
                     if (value.length() != 0) {
-                        label = "instance,"+value;
+                        label = "instance," + value;
+                    }
+                    if(value.length() == 0 && union.arr[numRow] == numRow){
+                        label = "instance";
                     }
                     JSONObject object = new JSONObject();
-                    for(String s : label.split(",")){
-                        if(!map.containsKey(s)){
+                    for (String s : label.split(",")) {
+                        if (!map.containsKey(s)) {
                             set.add(s);
                         }
-                        object.put(s,map.getOrDefault(s,""));
+                        object.put(s, map.getOrDefault(s, ""));
                     }
                     sb.append("'").append(label).append("',");
-                    sb.append("'").append(object.toJSONString()).append("');");
-                     // System.out.println(sb.toString());
+                    sb.append("'").append(object.toJSONString()).append("',");
+                    sb.append("'").append(getValue(row.getCell(8))).append("');");
+                    System.out.println(sb.toString());
                 }
 
             }
@@ -124,7 +133,7 @@ public class Application {
         StringBuilder sb = new StringBuilder();
         if (index.length() != 0) {
             sb.append("'").append(index, 0, index.indexOf("("))
-                    .append("','").append(index, index.indexOf("(")+1, index.length() - 1).append("',");
+                    .append("','").append(index, index.indexOf("(") + 1, index.length() - 1).append("',");
         } else {
             sb.append("'','',");
         }
@@ -133,7 +142,7 @@ public class Application {
 
     public static String getValue(Cell cell) {
         String val = "";
-        if (cell == null) return val;
+        if (cell == null) return "";
         switch (cell.getCellType()) {
             case 1:   // 字符串类型
                 val = cell.getStringCellValue().trim();
@@ -159,5 +168,23 @@ public class Application {
         ZoneId zone = ZoneId.systemDefault();
         LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(), zone);
         return df.format(localDateTime);
+    }
+
+    static class Union{
+        int[] arr;
+
+        public Union(){
+            arr = new int[500];
+            for(int i=0;i<200;i++){
+                arr[i] = i;
+            }
+        }
+
+        public void union(int less,int more){
+            while (more != less){
+                arr[more] = less;
+                more--;
+            }
+        }
     }
 }
