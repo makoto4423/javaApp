@@ -23,7 +23,7 @@ public class Application {
 
     public static void main(String[] args) {
         try {
-            String path = "C:\\Users\\lawli\\Desktop\\document\\WeChat Files\\wxid_v48jxlygodox21\\FileStorage\\File\\2020-11\\1.xlsx";
+            String path = "C:\\Users\\lawli\\Documents\\WXWork\\1688852038467602\\Cache\\File\\2021-03\\1.xlsx";
             // 读取的时候可以使用流，也可以直接使用文件名
             FileInputStream is = new FileInputStream(path);
             Set<String> set = new HashSet<>();
@@ -48,14 +48,14 @@ public class Application {
                     String value = getValue(row.getCell(7));
                     map.put(key, value);
                 }
-//                StringBuilder h1 = new StringBuilder("INSERT INTO `mnt_index_label` (`id`, `name`, `zh_name`) ");
-//                for(String k : map.keySet()){
-//                    StringBuilder dd = new StringBuilder(h1);
-//                    dd.append(" VALUES ('proIndex-").append(UUID.randomUUID().toString().replaceAll("-", "").substring(20)).append("',");
-//                    dd.append("'").append(k).append("',");
-//                    dd.append("'").append(map.get(k)).append("');");
-//                    System.out.println(dd);
-//                }
+                StringBuilder h1 = new StringBuilder("INSERT INTO `mnt_index_label` (`id`, `name`, `zh_name`) ");
+                for(String k : map.keySet()){
+                    StringBuilder dd = new StringBuilder(h1);
+                    dd.append(" VALUES ('proIndex-").append(UUID.randomUUID().toString().replaceAll("-", "").substring(20)).append("',");
+                    dd.append("'").append(k).append("',");
+                    dd.append("'").append(map.get(k)).append("');");
+                    System.out.println(dd);
+                }
                 String index1 = "", index2 = "", index3 = "", index4 = "", label = "";
                 // 循环row，如果第一行是字段，则 numRow = 1
                 for (int numRow = 1; numRow <= sheet.getLastRowNum(); numRow++) {
@@ -114,7 +114,7 @@ public class Application {
                     sb.append("'").append(label).append("',");
                     sb.append("'").append(object.toJSONString()).append("',");
                     sb.append("'").append(getValue(row.getCell(8))).append("');");
-                    System.out.println(sb.toString());
+                    // System.out.println(sb.toString());
                 }
 
             }

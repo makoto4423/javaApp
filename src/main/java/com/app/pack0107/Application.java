@@ -26,7 +26,7 @@ public class Application {
 //        System.out.println(~1);
 //        Set<String> set = new HashSet<>();
 //        set.remove(null);
-        String q = "sum(agree_afa_engine_svc_scene_executed_total{date_time=\"${__from:date:yyyy-MM-dd}\"})";
+        String q = "sum(agree_afa_engine_svc_scene_executed_total{date_time=\"${__from:date:yyyy-MM-dd}\",instance=\"10.8.4.190\"})";
         int left = q.indexOf(graFromDate);
         int right = q.indexOf("}\"");
         LocalDateTime fromDate;
