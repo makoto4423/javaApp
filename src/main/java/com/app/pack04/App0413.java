@@ -24,4 +24,11 @@ public class App0413 {
         System.out.println(template.opsForList().range("list",0,10));
     }
 
+    public class A{
+        public static final String s  = "";
+
+        public final  void func(){
+
+        }
+    }
 }

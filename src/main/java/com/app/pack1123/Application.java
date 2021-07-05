@@ -26,10 +26,11 @@ public class Application {
             String path = "C:\\Users\\lawli\\Documents\\WXWork\\1688852038467602\\Cache\\File\\2021-03\\1.xlsx";
             // 读取的时候可以使用流，也可以直接使用文件名
             FileInputStream is = new FileInputStream(path);
+            String pvID = "";
             Set<String> set = new HashSet<>();
             Workbook xwb = new XSSFWorkbook(is);
             // 循环工作表sheet
-            StringBuilder head = new StringBuilder("INSERT INTO `mnt_index_defined` (`ID`, `NAME`, `TYPE`, `LEVEL_1`, `LEVEL_1_NAME`, `LEVEL_2`, `LEVEL_2_NAME`, `LEVEL_3`, `LEVEL_3_NAME`, `LEVEL_4`, `LEVEL_4_NAME`, `LABELS`, `LABELS_NAME`, `UNIT_VALUE`) ");
+            StringBuilder head = new StringBuilder("INSERT INTO `mnt_index_defined` (`ID`, `NAME`, `TYPE`, `LEVEL_1`, `LEVEL_1_NAME`, `LEVEL_2`, `LEVEL_2_NAME`, `LEVEL_3`, `LEVEL_3_NAME`, `LEVEL_4`, `LEVEL_4_NAME`, `LABELS`, `LABELS_NAME`, `UNIT_VALUE`,`PV_ID`) ");
             for (int numSheet = 0; numSheet < xwb.getNumberOfSheets(); numSheet++) {
                 Sheet sheet = xwb.getSheetAt(numSheet);
                 if (sheet == null) {
@@ -113,7 +114,8 @@ public class Application {
                     }
                     sb.append("'").append(label).append("',");
                     sb.append("'").append(object.toJSONString()).append("',");
-                    sb.append("'").append(getValue(row.getCell(8))).append("');");
+                    sb.append("'").append(getValue(row.getCell(8))).append("',");
+                    sb.append("'").append(pvID).append("');");
                     // System.out.println(sb.toString());
                 }
 

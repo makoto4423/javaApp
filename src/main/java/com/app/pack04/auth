@@ -1,0 +1,96 @@
+aweb_user:
+    id varchar(50) NOT NULL COMMENT 'id',
+    name varchar(32) COMMENT '用户名',
+    nickname varchar(32) COMMENT '昵称',
+    password varchar(255) COMMENT '密码',
+    secret_key varchar(255) COMMENT '密码',
+    email varchar(100) COMMENT '邮箱',
+    phone varchar(18) COMMENT '电话号码',
+    status varchar(1) COMMENT '用户状态0-新用户,1-正常，2-锁定',
+    description varchar(255) COMMENT '描述',
+    type varchar(1) COMMENT '用户类型0-超级管理员，1-普通用户',
+    last_host_address varchar(32) COMMENT '最后登录地址',
+    last_login_time varchar(32) COMMENT '最后登录时间',
+    failed_login_count varchar(2) COMMENT '连续登录错误数',
+    last_failed_login_time varchar(32) COMMENT '上次登录失败时间',
+    lock_time varchar(32) COMMENT '用户锁定时间',
+    usr_password_updatetime varchar(30) COMMENT '密码修改时间',
+    usr_remark varchar(200) COMMENT '备注',
+    usr_password varchar(300) COMMENT 'afa密码',
+    is_delete int(1) default '0' COMMENT '是否删除：0否 1是',
+
+    setting text COMMENT '个人设置json',
+    organization_id varchar(255) COMMENT '组织机构id',
+    job varchar(255) COMMENT '职位',
+
+    create_time varchar(25) COMMENT '创建时间',
+    create_user_id varchar(50) COMMENT '创建用户id',
+    create_user_name varchar(50) COMMENT '创建用户name',
+    update_time varchar(30) COMMENT '更新时间',
+    update_user_id varchar(50) COMMENT '更新用户id',
+    update_user_name varchar(30) COMMENT '更新用户name',
+
+aweb_role:
+    id varchar(50) NOT NULL COMMENT 'id',
+    name varchar(200) COMMENT '名称',
+    description varchar(400) COMMENT '描述',
+    status varchar(2) COMMENT '状态',
+
+    tenant_id varchar(50) COMMENT '租户id',
+
+    create_time varchar(25) COMMENT '创建时间',
+    create_user_id varchar(50) COMMENT '创建用户id',
+    create_user_name varchar(50) COMMENT '创建用户name',
+    update_time varchar(30) COMMENT '更新时间',
+    update_user_id varchar(50) COMMENT '更新用户id',
+    update_user_name varchar(30) COMMENT '更新用户name',
+
+aweb_authority:
+    id varchar(50) NOT NULL COMMENT 'id',
+    parent_id varchar(50) COMMENT '父级id',
+    name varchar(255) COMMENT '名称',
+    type varchar(20) COMMENT '平台类型',
+
+aweb_menu:
+    id varchar(50) NOT NULL COMMENT 'id',
+    parent_id varchar(50) COMMENT '父级id',
+    name varchar(200) COMMENT '名称',
+    title varchar(50) COMMENT '标题',
+    seq varchar(5) COMMENT '序号',
+    path varchar(400) COMMENT '路径',
+    icon varchar(50) COMMENT '图标',
+    type varchar(20) COMMENT '平台类型',
+    status varchar(2) COMMENT '状态',
+    url varchar(50) COMMENT '仅整合afa5管控时使用，url为原afa5菜单表的men_value字段值',
+
+aweb_tenant:
+    id varchar(50) NOT NULL COMMENT 'id',
+    name varchar(255) COMMENT '名称',
+    description varchar(255) COMMENT '描述',
+    setting varchar(50) COMMENT '租户设置',
+
+    type varchar(50) COMMENT '类型，消费者0/生产者1',
+    cust_pro_code varchar(50) COMMENT 'cust项目code',
+    owner_id varchar(50) COMMENT '所有者id',
+    owner_name varchar(50) COMMENT '所有者名称',
+    owner_nickname varchar(50) COMMENT '所有者昵称',
+
+    create_time varchar(255) COMMENT '创建时间',
+    create_user_id varchar(255) COMMENT '创建用户id',
+    create_user_name varchar(255) COMMENT '创建用户昵称',
+    update_time varchar(255) COMMENT '更新时间',
+    update_user_id varchar(255) COMMENT '更新用户id',
+    update_user_name varchar(255) COMMENT '更新用户昵称',
+
+aweb_environment:
+    id varchar(50) NOT NULL COMMENT 'id',
+    name varchar(200) COMMENT '名称',
+    description varchar(300) COMMENT '描述',
+
+    create_time varchar(25) COMMENT '创建时间',
+    create_user_id varchar(50) COMMENT '创建用户id',
+    create_user_name varchar(50) COMMENT '创建用户name',
+    update_time varchar(30) COMMENT '更新时间',
+    update_user_id varchar(50) COMMENT '更新用户id',
+    update_user_name varchar(30) COMMENT '更新用户name',
+

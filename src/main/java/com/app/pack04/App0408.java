@@ -1,9 +1,13 @@
 package com.app.pack04;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 
 public class App0408 {
 
@@ -21,14 +25,25 @@ public class App0408 {
 //        str = df.format(date);
 //        System.out.println(str);
 
-        // String promQL = "node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"} - 0";
-        String promQL = "sum(time() - node_boot_time_seconds{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"})by(instance)";
-        while (promQL.contains("{")) {
-            int left = promQL.indexOf("{");
-            int right = promQL.indexOf("}", left);
-            promQL = promQL.substring(0, left) + promQL.substring(right+1);
+        try {
+            Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface.getNetworkInterfaces();
+            InetAddress ip;
+            while (allNetInterfaces.hasMoreElements()) {
+                NetworkInterface netInterface = allNetInterfaces.nextElement();
+                if (!netInterface.isLoopback() && !netInterface.isVirtual() && netInterface.isUp()) {
+                    Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
+                    while (addresses.hasMoreElements()) {
+                        ip = addresses.nextElement();
+                        if (ip instanceof Inet4Address) {
+                            System.out.println(ip.getHostAddress());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("IP地址获取失败" + e.toString());
         }
-        System.out.println(promQL);
+
     }
 
 }
