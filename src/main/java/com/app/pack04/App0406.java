@@ -10,9 +10,9 @@ import java.util.Objects;
 public class App0406 {
 
     public static void main(String[] args) throws IOException {
-        String path = "D:\\intellij\\admin_frontend\\frontend\\src\\views\\page\\monitor\\";
+        String path = "D:\\Chrome\\";
         // String[] catalogs = {"monitorClusterJson"};
-        String[] catalogs = {"monitorClusterJson", "monitorNodeJson", "monitorServiceJson"};
+        String[] catalogs = {"dashBoard2021-09-01.json"};
         for (String catalog : catalogs) {
             File file = new File(path + catalog);
             File[] files = file.listFiles();

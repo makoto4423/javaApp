@@ -29,15 +29,16 @@ import java.util.*;
 public class App0413 {
 
     public static void main(String[] args) {
-        single();
+        cluster();
     }
 
 
     public static void single() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName("10.8.4.190");
-        configuration.setPort(26379);
+        configuration.setPort(6376);
         configuration.setDatabase(0);
+        configuration.setPassword("1234");
         LettuceConnectionFactory factory = new LettuceConnectionFactory(configuration,getClientConfig());
         factory.afterPropertiesSet();
 //        RedisStandaloneConfiguration configuration2 = new RedisStandaloneConfiguration();
@@ -61,6 +62,7 @@ public class App0413 {
         template.setHashValueSerializer(new StringRedisSerializer());
         template.setValueSerializer(new MyRedisSerializer());
         template.afterPropertiesSet();
+        template.rename("makoto","L.");
 //        A a = new A();
 //        ByteArrayOutputStream bo = new ByteArrayOutputStream();
 //        ObjectOutputStream oo = null;
