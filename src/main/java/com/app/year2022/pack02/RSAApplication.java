@@ -23,7 +23,10 @@ public class RSAApplication {
     static String PRIVATE_KEY_PATH = "";
 
     public static void main(String[] args){
-        System.out.println(RsaHelper.decrypt("l4GCoJufrst1rpe2FZpEUBAvXXJFNVwLvm0yc11DaDYODHksz9nusSacDknC6sGTHWNlpXWXeY27/WjLtYlfRtRhVquV2zBfaI8wJHJvfvDRkM2O9b4/Kr6hvEHcg6AZjKGzxuNTrIcj4HkagWWBgwfxAdFlNswGUecRV4N0SOU="));
+        String s = RsaHelper.encrypt("{\"id\":\"page-020iPCBi\"}");
+        System.out.println(s);
+        System.out.println(RsaHelper.decrypt(s));
+        System.out.println(RsaHelper.decrypt("JFQIXgnck1XoIdKvy3u4t5PBd2hS6drBbR3R87k2osRE/ZV0Rhw4i3/AtJRuB7pHsq4RE0w/NEdhtfbKCFNbT+W8o/xHF+tEY6PjKJqCeSks71vel4P5TqmbZdV/w8JLDHIsCC2LwfrssOegUFTYk0A3kPFhhjSrXNo9zRo6PmA="));
     }
 
     static String pubKey;
