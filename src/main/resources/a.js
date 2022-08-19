@@ -1,24 +1,15 @@
 
-function main(){
-    return cal(httpRequest())
+function main(v){
+    return cal(httpRequest(v))
 }
 
-function httpRequest(){
+function httpRequest(v){
     var a = new Object();
-    a.http = 'http';
-    a.method = 'method';
-    var b = new Object();
-    b.mind = 'mind';
-    a.spaces = ['Car', 'b', 'without']
-    var http = new OkHttp()
-    var header = new Object();
-    header.token = 'token';
-    header.csrf = 'csrf';
-    a.body = http.send('POST','http://127.0.0.1:8081/test', header,  JSON.stringify('{"name":"name", "age":10}')).body;
-//    a.no = 1
-    b = new Object();
-    b.body = http.send('POST','http://127.0.0.1:8081/test', header,  JSON.stringify('{"name":"name", "age":10}'));
-    return [a,b];
+    var http = new OkHttp();
+    a.body = http.send('DB','entity-aaCej9Tb',v, true,  null);
+    var authorization = new Authorization();
+    a.user = authorization.get();
+    return a
 }
 
 function cal(a){

@@ -14,6 +14,8 @@ javaApp.iml
 target
 src/main/java/makoto.java
 src/main/java/makoto/makoto.java
+src/main/java/com/app/year2021/month10/PrintApplication.java;
+src/main/java/com/app/pack0115/LCApplication.java
 # Package Files #
 *.jar
 *.war

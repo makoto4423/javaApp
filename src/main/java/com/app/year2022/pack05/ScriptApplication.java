@@ -50,7 +50,7 @@ public class ScriptApplication {
             String s = sb.toString();
             engine.eval(s);
 
-            Object result = ((Invocable) engine).invokeFunction("main");
+            Object result = ((Invocable) engine).invokeFunction("main", "10");
             List<Object> list = parseResult(JSONObject.toJSONString(result));
         }
 
