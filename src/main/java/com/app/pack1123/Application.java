@@ -146,7 +146,7 @@ public class Application {
         String val = "";
         if (cell == null) return "";
         switch (cell.getCellType()) {
-            case 1:   // 字符串类型
+            case STRING:   // 字符串类型
                 val = cell.getStringCellValue().trim();
                 break;
             case NUMERIC:  // 数值类型

@@ -42,7 +42,7 @@ public class App0413 {
 
     public static void single() throws InterruptedException {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("10.8.4.190");
+        configuration.setHostName("127.0.0.1");
         configuration.setPort(6379);
 //        configuration.setDatabase(0);
 //        configuration.setPassword("1234");
@@ -61,37 +61,38 @@ public class App0413 {
         } catch (Exception e) {
 
         }
-        log.info(" EEE cost " + (System.currentTimeMillis()-start));
+//        log.info(" EEE cost " + (System.currentTimeMillis()-start));
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(new StringRedisSerializer());
         template.setValueSerializer(new StringRedisSerializer());
+//        template.opsForValue().set("out", "timeout", 3, TimeUnit.SECONDS);
+        DefaultRedisScript<Boolean> redisScript = new DefaultRedisScript<>();
+        redisScript.setResultType(Boolean.class);
+        //lua文件存放在resources目录下的redis文件夹内
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/redis/descrease.lua")));
         template.afterPropertiesSet();
-        template.opsForValue().set("out", "timeout", 3, TimeUnit.SECONDS);
-//        DefaultRedisScript<List> redisScript = new DefaultRedisScript<>();
-//        redisScript.setResultType(List.class);
-//        //lua文件存放在resources目录下的redis文件夹内
-//        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/redis/cas.lua")));
-//        List<?> result = template.execute(redisScript, Arrays.asList("k1","10","13"));
-//        System.out.println("lock==" + result);
-        template.setEnableTransactionSupport(true);
-        template.watch("k1");
-        template.watch("k2");
-        log.info((String) template.opsForValue().get("k1"));
-        log.info((String) template.opsForValue().get("k2"));
-        Thread.sleep(5000);
-        template.multi();
-        List<Object> objects = template.opsForValue().multiGet(Arrays.asList("k1", "k2"));
-        Map<String,String> map = new HashMap<>();
-        map.put("k1", "10");
-        map.put("k2", "10");
-        template.opsForValue().multiSet(map);
-//        template.opsForValue().set("k1","10");
-//        template.opsForValue().set("k2","10");
-        Thread.sleep(5000);
-        List<Object> list = template.exec();
+
+        Boolean result = template.execute(redisScript, Arrays.asList("k1","10"));
+        System.out.println("lock==" + result);
+//        template.setEnableTransactionSupport(true);
+//        template.watch("k1");
+//        template.watch("k2");
+//        log.info((String) template.opsForValue().get("k1"));
+//        log.info((String) template.opsForValue().get("k2"));
+//        Thread.sleep(5000);
+//        template.multi();
+//        List<Object> objects = template.opsForValue().multiGet(Arrays.asList("k1", "k2"));
+//        Map<String,String> map = new HashMap<>();
+//        map.put("k1", "10");
+//        map.put("k2", "10");
+//        template.opsForValue().multiSet(map);
+////        template.opsForValue().set("k1","10");
+////        template.opsForValue().set("k2","10");
+//        Thread.sleep(5000);
+//        List<Object> list = template.exec();
 
 
 //        A a = new A();

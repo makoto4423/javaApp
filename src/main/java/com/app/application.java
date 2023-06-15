@@ -18,7 +18,7 @@ import java.lang.reflect.Proxy;
 public class application {
 
     public static void main(String[] args) {
-        jdkProxy();
+        cglib();
     }
 
 

@@ -32,27 +32,27 @@ public class ScriptApplication {
             System.out.println("Invoking methods is not supported.");
             return;
         }
-        for(int i = 0;i<2;i++){
-            engine.put("JavaOkHttp", OkHttp.class);
-            String path = "D:\\intellij\\javaApp\\src\\main\\resources\\a.js";
-            File file = new File(path);
-            if (!file.exists()) return ;
-            StringBuilder sb = new StringBuilder("var OkHttp = JavaOkHttp.static;");
-            try (FileChannel channel = FileChannel.open(Paths.get(path), StandardOpenOption.READ)) {
-                ByteBuffer buffer = ByteBuffer.allocate(1024);
-                int index;
-                while ((index = channel.read(buffer)) != -1) {
-                    sb.append(new String(buffer.array(),0, index));
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            String s = sb.toString();
-            engine.eval(s);
-
-            Object result = ((Invocable) engine).invokeFunction("main", "10");
-            List<Object> list = parseResult(JSONObject.toJSONString(result));
-        }
+//        for(int i = 0;i<2;i++){
+//            engine.put("JavaOkHttp", OkHttp.class);
+//            String path = "D:\\intellij\\javaApp\\src\\main\\resources\\a.js";
+//            File file = new File(path);
+//            if (!file.exists()) return ;
+//            StringBuilder sb = new StringBuilder("var OkHttp = JavaOkHttp.static;");
+//            try (FileChannel channel = FileChannel.open(Paths.get(path), StandardOpenOption.READ)) {
+//                ByteBuffer buffer = ByteBuffer.allocate(1024);
+//                int index;
+//                while ((index = channel.read(buffer)) != -1) {
+//                    sb.append(new String(buffer.array(),0, index));
+//                }
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//            String s = sb.toString();
+//            engine.eval(s);
+//
+//            Object result = ((Invocable) engine).invokeFunction("main", "10");
+//            List<Object> list = parseResult(JSONObject.toJSONString(result));
+//        }
 
 
     }
